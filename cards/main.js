@@ -1,12 +1,8 @@
 function loadCards() {
     let hand = [];
 
-    hand.push(pack.getRandom());
-    hand.push(pack.getRandom());
-    hand.push(pack.getRandom());
-    hand.push(pack.getRandom());
-
-    console.log(hand);
+    hand.push(pack.getRandom(4));
+    hand = hand.flat(Infinity);
 
     const div = document.getElementById("cards");
 
@@ -28,6 +24,28 @@ function loadCards() {
     }
 }
 
-Array.prototype.getRandom = function() {
-    return this[Math.floor(Math.random() * this.length)];
+Array.prototype.getRandom = function(n) {
+    let list = [...this];
+
+    for (let i = list.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [list[i], list[j]] = [list[j], list[i]];
+    }
+
+    return list.slice(0,n);
+}
+
+function reload() {
+    const button = document.getElementById("reload");
+    
+    button.classList.add("spin-animation");
+
+    setTimeout(() => {
+        button.classList.remove("spin-animation");
+        location.reload();
+    }, 1000);
+}
+
+function home() {
+    window.location.href = "index.html";
 }
